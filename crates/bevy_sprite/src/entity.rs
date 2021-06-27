@@ -1,7 +1,4 @@
-use crate::{
-    render::SPRITE_PIPELINE_HANDLE, sprite::Sprite, ColorMaterial, TextureAtlas,
-    TextureAtlasSprite, QUAD_HANDLE, SPRITE_SHEET_PIPELINE_HANDLE,
-};
+use crate::{render::SPRITE_PIPELINE_HANDLE, sprite::Sprite, ColorMaterial, TextureAtlas, TextureAtlasSprite, QUAD_HANDLE, SPRITE_SHEET_PIPELINE_HANDLE, PARALLAX_PIPELINE_HANDLE};
 use bevy_asset::Handle;
 use bevy_ecs::bundle::Bundle;
 use bevy_render::{
@@ -79,6 +76,41 @@ impl Default for SpriteSheetBundle {
             draw: Default::default(),
             sprite: Default::default(),
             texture_atlas: Default::default(),
+            transform: Default::default(),
+            global_transform: Default::default(),
+        }
+    }
+}
+
+#[derive(Bundle, Clone)]
+pub struct ParallaxSpriteBundle {
+    pub parallax: ParallaxSprite,
+    pub mesh: Handle<Mesh>, // TODO: maybe abstract this out
+    pub material: Handle<ColorMaterial>,
+    pub main_pass: MainPass,
+    pub draw: Draw,
+    pub visible: Visible,
+    pub render_pipelines: RenderPipelines,
+    pub transform: Transform,
+    pub global_transform: GlobalTransform,
+}
+
+
+impl Default for ParallaxSpriteBundle {
+    fn default() -> Self {
+        Self {
+            mesh: QUAD_HANDLE.typed(),
+            render_pipelines: RenderPipelines::from_pipelines(vec![RenderPipeline::new(
+                PARALLAX_PIPELINE_HANDLE.typed(),
+            )]),
+            visible: Visible {
+                is_transparent: true,
+                ..Default::default()
+            },
+            main_pass: MainPass,
+            draw: Default::default(),
+            sprite: Default::default(),
+            material: Default::default(),
             transform: Default::default(),
             global_transform: Default::default(),
         }

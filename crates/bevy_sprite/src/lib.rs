@@ -9,6 +9,7 @@ mod render;
 mod sprite;
 mod texture_atlas;
 mod texture_atlas_builder;
+mod parallax;
 
 pub mod prelude {
     #[doc(hidden)]
